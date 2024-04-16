@@ -1,7 +1,7 @@
 import logo from "@/assets/logo.svg";
 import Image from "next/image";
 import ProviderButton from "./_components/ProviderButton";
-import { createClient } from "@/lib/supabase/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
@@ -13,7 +13,7 @@ export default async function page() {
     const { error, data } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${origin}`,
+        redirectTo: `${origin}/auth/callback`,
       },
     });
 

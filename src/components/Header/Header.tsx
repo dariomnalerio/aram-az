@@ -4,9 +4,17 @@ import logo from "@/assets/logo.svg";
 import Link from "next/link";
 import Image from "next/image";
 import { Separator } from "../ui/separator";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Header() {
-  const user = false;
+export default async function Header() {
+  //const user = false;
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  console.log(user);
 
   return (
     <header>
