@@ -1,7 +1,7 @@
 import logo from "@/assets/logo.svg";
 import Image from "next/image";
 import ProviderButton from "./_components/ProviderButton";
-import { handleDiscordLogin, handleGoogleLogin } from "../actions/";
+import { handleDiscordLogin, handleGoogleLogin } from "../actions";
 
 export default async function page() {
   return (

@@ -5,15 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { Separator } from "../ui/separator";
 import { createClient } from "@/lib/supabase/server";
-import { handleLogout } from "@/app/actions";
+import { getUser, handleLogout } from "@/app/actions/";
 
 export default async function Header() {
   //const user = false;
   const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user } = await getUser();
 
   return (
     <header>
@@ -47,7 +45,7 @@ export default async function Header() {
           {user && (
             <>
               <Button className='w-20 text-foreground transition hover:scale-105' asChild>
-                <Link href={`/user/`}>Profile</Link>
+                <Link href={`/user/${user.id}`}>Profile</Link>
               </Button>
               <form action={handleLogout}>
                 <Button

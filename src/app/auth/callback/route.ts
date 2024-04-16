@@ -14,11 +14,13 @@ export async function GET(request: NextRequest) {
       console.error("Error exchanging code for session:", error.message);
     }
 
-    if (data) {
-      console.log(data)
+    if (data.user) {
+      // url to redirect to after sign in process completes
+      return NextResponse.redirect(`${requestUrl.origin}/user/${data.user.id}`);
     }
-  }
 
-  // url to redirect to after sign in process completes
+
+  }
   return NextResponse.redirect(requestUrl.origin);
+
 }
