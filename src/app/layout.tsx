@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { env } from "@/config";
 import Header from "@/components/Header/Header";
+
+export const dynamic = "force-dynamic";
 
 const fontSans = FontSans({
   subsets: ["latin"],
