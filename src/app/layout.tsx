@@ -29,7 +29,7 @@ export default function RootLayout({
         )}
       >
         <Header />
-        <main className='flex-auto bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] font-inter'>
+        <main className='flex flex-col flex-auto bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] font-inter'>
           {children}
         </main>
       </body>
