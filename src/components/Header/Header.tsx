@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Separator } from "../ui/separator";
 
 export default function Header() {
-  const user = true;
+  const user = false;
 
   return (
     <header>
