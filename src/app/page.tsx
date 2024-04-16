@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+    <div className='flex min-h-screen flex-col items-center justify-between p-24'>
       <div className='mx-1.5 mt-20 flex justify-center'>
         <div className='relative aspect-video max-w-[1200px]'>
           <Image src={aram} alt='ARAM-AZ' className='w-full rounded-xl shadow-xl' />
@@ -22,6 +22,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
