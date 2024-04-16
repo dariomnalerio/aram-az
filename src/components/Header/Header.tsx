@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Separator } from "../ui/separator";
 import { createClient } from "@/lib/supabase/server";
+import { handleLogout } from "@/app/actions";
 
 export default async function Header() {
   //const user = false;
@@ -13,8 +14,6 @@ export default async function Header() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  console.log(user);
 
   return (
     <header>
@@ -50,12 +49,14 @@ export default async function Header() {
               <Button className='w-20 text-foreground transition hover:scale-105' asChild>
                 <Link href={`/user/`}>Profile</Link>
               </Button>
-              <Button
-                className='w-20 text-foreground transition hover:scale-105'
-                variant={"destructive"}
-              >
-                Log out
-              </Button>
+              <form action={handleLogout}>
+                <Button
+                  className='w-20 text-foreground transition hover:scale-105'
+                  variant={"destructive"}
+                >
+                  Log out
+                </Button>
+              </form>
             </>
           )}
         </div>
