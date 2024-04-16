@@ -8,9 +8,15 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     const supabase = createClient();
-    await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
+    if (error) {
+      console.error("Error exchanging code for session:", error.message);
+    }
 
+    if (data) {
+      console.log(data)
+    }
   }
 
   // url to redirect to after sign in process completes
