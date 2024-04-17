@@ -3,10 +3,12 @@ import { Unauthorized } from "@/components/Misc/Unauthorized";
 import { UserClub } from "@/types/types";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
+import React from "react";
 
 type Props = {
   children: React.ReactNode;
   noclub: React.ReactNode;
+  hasclub: React.ReactNode;
   params: {
     id: string;
   };
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
     "User profile page. This page is only accessible to the user itself. Here you can edit the champions you have played for each club.",
 };
 
-export default async function Layout({ children, noclub, params }: Props) {
+export default async function Layout({ children, noclub, hasclub, params }: Props) {
   const { user } = await getUser();
   let userClubs: UserClub[] | null = null;
 
@@ -34,8 +36,8 @@ export default async function Layout({ children, noclub, params }: Props) {
   return (
     <>
       {children}
-      {/* {userClubs && userClubs.length === 0 && } */}
-      {noclub}
+      {userClubs && userClubs.length === 0 && noclub}
+      {userClubs && userClubs.length > 0 && hasclub}
     </>
   );
 }

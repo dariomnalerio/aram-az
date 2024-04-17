@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { CreateClubDialog } from "../_components/CreateClubDialog";
+import { CreateClubDialog } from "../_components/noClub/CreateClubDialog";
 import { Button } from "@/components/ui/button";
 import { createClub } from "@/app/actions/clubs/create-club";
 
