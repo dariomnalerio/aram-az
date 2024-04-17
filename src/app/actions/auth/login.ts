@@ -1,9 +1,9 @@
+"use server";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
 const handleLogin = async (provider: "discord" | "google") => {
-  "use server";
   const supabase = createClient();
   const origin = headers().get("origin");
   const { error, data } = await supabase.auth.signInWithOAuth({
