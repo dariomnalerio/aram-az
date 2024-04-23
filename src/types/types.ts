@@ -13,3 +13,9 @@ export type ChampImg = {
   img_url: string;
   name: string;
 }
+
+export type PlayedChamps = {
+  champion_id: any;
+}[]
+  | null
+  | undefined
