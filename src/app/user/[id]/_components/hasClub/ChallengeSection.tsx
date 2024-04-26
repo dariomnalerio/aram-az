@@ -26,6 +26,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   const initialPlayedChamps = useRef<PlayedChamps>([]);
 
   const hasPlayedAllChampions = playedChamps?.length === 167;
+  const noChampionsPlayed = playedChamps?.length === 0;
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -35,6 +36,22 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     },
     [searchParams]
   );
+
+  const getMode = useCallback(() => {
+    let mode: Mode = "all";
+
+    const modeParam = searchParams.get("mode") as Mode;
+
+    if (modeParam === "played" || modeParam === "unplayed") {
+      mode = modeParam;
+    }
+
+    return mode;
+  }, [searchParams]);
+
+  const getSearchQuery = useCallback(() => {
+    return searchParams.get("search") || "";
+  }, [searchParams]);
 
   useEffect(() => {
     const getData = async () => {
@@ -70,8 +87,8 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     if (!imgs) return;
 
     const filtered = imgs.filter((champion) => {
-      const searchQuery = searchParams.get("search") ?? "";
-      const mode = (searchParams.get("mode") as Mode) ?? "all";
+      const searchQuery = getSearchQuery();
+      const mode = getMode();
 
       const nameMatches = champion.name
         .toLocaleLowerCase()
@@ -94,7 +111,16 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     });
 
     setFilteredImgs(filtered);
-  }, [playedChamps, imgs, searchParams, pathname, router, createQueryString]);
+  }, [
+    playedChamps,
+    imgs,
+    searchParams,
+    pathname,
+    router,
+    createQueryString,
+    getMode,
+    getSearchQuery,
+  ]);
 
   // on leave page
   useEffect(() => {
@@ -129,7 +155,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const searchQuery = e.target.value.toLocaleLowerCase().replace(" ", "");
 
-    const searchParam = searchParams.get("search");
+    const searchParam = getSearchQuery();
     // if search query is empty, remove search query from url
     if (!searchQuery && searchParam) {
       const params = new URLSearchParams(searchParams.toString());
@@ -155,10 +181,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
             className='w-full max-w-sm'
             onChange={handleSearch}
           />
-          <DropdownFilter
-            mode={(searchParams.get("mode") as Mode) ?? "all"}
-            setMode={handleFilterChange}
-          />
+          <DropdownFilter mode={getMode()} setMode={handleFilterChange} />
         </div>
         <SaveBtn
           className='w-full max-w-40 sm:ml-2 sm:block hidden'
@@ -175,10 +198,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
               className='w-full max-w-sm'
               onChange={handleSearch}
             />
-            <DropdownFilter
-              mode={(searchParams.get("mode") as Mode) ?? "all"}
-              setMode={handleFilterChange}
-            />
+            <DropdownFilter mode={getMode()} setMode={handleFilterChange} />
           </div>
           <SaveBtn
             className='my-4 w-full max-w-40 sm:ml-2'
@@ -195,15 +215,22 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
       {/* 
           if query search returns no results
         */}
-      {filteredImgs?.length === 0 && !isLoadingImg && (
+      {filteredImgs?.length === 0 && !isLoadingImg && getSearchQuery() && !noChampionsPlayed && (
         <h3 className='text-center text-foreground text-3xl py-3'>No champions found</h3>
+      )}
+
+      {/* if no champs have been played */}
+      {getMode() === "played" && noChampionsPlayed && (
+        <div className='text-center text-foreground text-3xl py-3'>
+          You have not played any champions
+        </div>
       )}
 
       {/* 
             if user has played all champions and mode is 'unplayed'
         */}
-      {searchParams.get("mode") === "unplayed" && hasPlayedAllChampions && (
-        <div className='col-span-full text-center text-foreground'>
+      {getMode() === "unplayed" && hasPlayedAllChampions && (
+        <div className='text-center text-foreground text-3xl py-3'>
           You have played all the champions
         </div>
       )}
