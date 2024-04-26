@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { SaveBtn } from "./SaveBtn";
 import { DropdownFilter } from "./DropdownFilter";
 import { Input } from "@/components/ui/input";
+import { ImageGridSkeleton } from "./ImageGridSkeleton";
 
 type ChallengeSectionProps = {
   clubId: string;
@@ -15,6 +16,7 @@ type ChallengeSectionProps = {
 
 export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   const params = useParams<{ id: string }>();
+  const [isLoadingImg, setIsLoadingImg] = useState(true);
   const [mode, setMode] = useState<"all" | "played" | "unplayed">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [imgs, setImgs] = useState<ChampImg[]>([]);
@@ -43,10 +45,12 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     if (imgs.length > 0) return;
 
     const getImages = async () => {
+      setIsLoadingImg(true);
       const { data } = await getChampImages();
       if (data) {
         setImgs(data);
       }
+      setIsLoadingImg(false);
     };
 
     getImages();
@@ -64,10 +68,16 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
       if (mode === "all") return nameMatches;
 
       if (mode === "played") {
-        return playedChamps?.some((champ) => champ.champion_id === champion.id) && nameMatches;
+        return (
+          initialPlayedChamps.current?.some((champ) => champ.champion_id === champion.id) &&
+          nameMatches
+        );
       }
       if (mode === "unplayed")
-        return !playedChamps?.some((champ) => champ.champion_id === champion.id) && nameMatches;
+        return (
+          !initialPlayedChamps.current?.some((champ) => champ.champion_id === champion.id) &&
+          nameMatches
+        );
     });
 
     setFilteredImgs(filtered);
@@ -135,11 +145,13 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
         </div>
       </div>
 
+      {isLoadingImg && <ImageGridSkeleton />}
+
       {/* 
           if query search returns no results
         */}
-      {filteredImgs?.length === 0 && (
-        <h3 className='text-center text-foreground text-3xl py-32'>No champions found</h3>
+      {filteredImgs?.length === 0 && !isLoadingImg && (
+        <h3 className='text-center text-foreground text-3xl py-3'>No champions found</h3>
       )}
 
       {/* 
