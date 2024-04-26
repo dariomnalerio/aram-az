@@ -3,8 +3,8 @@ import { getChampImages } from "@/app/actions/images/get-champ-images";
 import { Champion } from "@/components/Champion";
 import { cn } from "@/lib/utils";
 import { ChampImg, Mode, PlayedChamps } from "@/types/types";
-import { useParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useParams, usePathname, useSearchParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SaveBtn } from "./SaveBtn";
 import { DropdownFilter } from "./DropdownFilter";
 import { Input } from "@/components/ui/input";
@@ -16,15 +16,25 @@ type ChallengeSectionProps = {
 
 export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   const params = useParams<{ id: string }>();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [isLoadingImg, setIsLoadingImg] = useState(true);
-  const [mode, setMode] = useState<"all" | "played" | "unplayed">("all");
-  const [searchQuery, setSearchQuery] = useState("");
   const [imgs, setImgs] = useState<ChampImg[]>([]);
   const [filteredImgs, setFilteredImgs] = useState<ChampImg[]>([]);
   const [playedChamps, setPlayedChamps] = useState<PlayedChamps>([]);
   const initialPlayedChamps = useRef<PlayedChamps>([]);
 
   const hasPlayedAllChampions = playedChamps?.length === 167;
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   useEffect(() => {
     const getData = async () => {
@@ -60,6 +70,9 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     if (!imgs) return;
 
     const filtered = imgs.filter((champion) => {
+      const searchQuery = searchParams.get("search") ?? "";
+      const mode = (searchParams.get("mode") as Mode) ?? "all";
+
       const nameMatches = champion.name
         .toLocaleLowerCase()
         .replace(".webp", "")
@@ -81,7 +94,22 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     });
 
     setFilteredImgs(filtered);
-  }, [mode, searchQuery, playedChamps, imgs]);
+  }, [playedChamps, imgs, searchParams, pathname, router, createQueryString]);
+
+  // on leave page
+  useEffect(() => {
+    function beforeUnload(e: BeforeUnloadEvent) {
+      if (JSON.stringify(initialPlayedChamps.current) !== JSON.stringify(playedChamps)) {
+        e.preventDefault();
+      }
+    }
+
+    window.addEventListener("beforeunload", beforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnload);
+    };
+  }, [playedChamps]);
 
   const handleChampionClick = (champId: string) => {
     // add to playedChamps
@@ -99,11 +127,22 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSearchQuery(e.target.value.toLocaleLowerCase());
+    const searchQuery = e.target.value.toLocaleLowerCase().replace(" ", "");
+
+    const searchParam = searchParams.get("search");
+    // if search query is empty, remove search query from url
+    if (!searchQuery && searchParam) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("search");
+      router.push(`${pathname}?${params.toString()}`);
+      return;
+    }
+
+    router.push(`${pathname}?${createQueryString("search", searchQuery)}`);
   };
 
   const handleFilterChange = (mode: Mode) => {
-    setMode(mode);
+    router.push(`${pathname}?${createQueryString("mode", mode)}`);
   };
 
   return (
@@ -116,7 +155,10 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
             className='w-full max-w-sm'
             onChange={handleSearch}
           />
-          <DropdownFilter mode={mode} setMode={handleFilterChange} />
+          <DropdownFilter
+            mode={(searchParams.get("mode") as Mode) ?? "all"}
+            setMode={handleFilterChange}
+          />
         </div>
         <SaveBtn
           className='w-full max-w-40 sm:ml-2 sm:block hidden'
@@ -133,7 +175,10 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
               className='w-full max-w-sm'
               onChange={handleSearch}
             />
-            <DropdownFilter mode={mode} setMode={handleFilterChange} />
+            <DropdownFilter
+              mode={(searchParams.get("mode") as Mode) ?? "all"}
+              setMode={handleFilterChange}
+            />
           </div>
           <SaveBtn
             className='my-4 w-full max-w-40 sm:ml-2'
@@ -157,7 +202,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
       {/* 
             if user has played all champions and mode is 'unplayed'
         */}
-      {mode === "unplayed" && hasPlayedAllChampions && (
+      {searchParams.get("mode") === "unplayed" && hasPlayedAllChampions && (
         <div className='col-span-full text-center text-foreground'>
           You have played all the champions
         </div>
