@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .flex-grid {
-    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
-  }
-}
-
 @layer base {
   :root {
     --background: 223 17% 10%;

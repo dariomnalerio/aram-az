@@ -1,17 +1,13 @@
-import {
-  addPlayedChampsToClub,
-  getUserPlayedChampsByClub,
-  removePlayedChampsFromClub,
-} from "@/app/actions";
+import { getUserPlayedChampsByClub } from "@/app/actions";
 import { getChampImages } from "@/app/actions/images/get-champ-images";
 import { Champion } from "@/components/Champion";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ChampImg, PlayedChamps } from "@/types/types";
+import { ChampImg, Mode, PlayedChamps } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SaveBtn } from "./SaveBtn";
-import { toast } from "sonner";
+import { DropdownFilter } from "./DropdownFilter";
+import { Input } from "@/components/ui/input";
 
 type ChallengeSectionProps = {
   clubId: string;
@@ -19,9 +15,14 @@ type ChallengeSectionProps = {
 
 export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   const params = useParams<{ id: string }>();
+  const [mode, setMode] = useState<"all" | "played" | "unplayed">("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [imgs, setImgs] = useState<ChampImg[]>([]);
+  const [filteredImgs, setFilteredImgs] = useState<ChampImg[]>([]);
   const [playedChamps, setPlayedChamps] = useState<PlayedChamps>([]);
   const initialPlayedChamps = useRef<PlayedChamps>([]);
+
+  const hasPlayedAllChampions = playedChamps?.length === 167;
 
   useEffect(() => {
     const getData = async () => {
@@ -51,6 +52,27 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     getImages();
   }, [imgs]);
 
+  useEffect(() => {
+    if (!imgs) return;
+
+    const filtered = imgs.filter((champion) => {
+      const nameMatches = champion.name
+        .toLocaleLowerCase()
+        .replace(".webp", "")
+        .includes(searchQuery);
+
+      if (mode === "all") return nameMatches;
+
+      if (mode === "played") {
+        return playedChamps?.some((champ) => champ.champion_id === champion.id) && nameMatches;
+      }
+      if (mode === "unplayed")
+        return !playedChamps?.some((champ) => champ.champion_id === champion.id) && nameMatches;
+    });
+
+    setFilteredImgs(filtered);
+  }, [mode, searchQuery, playedChamps, imgs]);
+
   const handleChampionClick = (champId: string) => {
     // add to playedChamps
     const isChampPlayed = playedChamps?.some((champ) => champ.champion_id === champId);
@@ -66,18 +88,72 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     }
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setSearchQuery(e.target.value.toLocaleLowerCase());
+  };
+
+  const handleFilterChange = (mode: Mode) => {
+    setMode(mode);
+  };
+
   return (
     <>
-      <SaveBtn
-        className='my-4 w-full max-w-40'
-        initialPlayedChamps={initialPlayedChamps}
-        clubId={clubId}
-        userId={params.id}
-        playedChamps={playedChamps}
-      />
-      {imgs.length > 0 && (
-        <div className='grid flex-grid gap-1.5 max-w-[288px] sm:max-w-[576px] md:max-w-[648px] lg:max-w-[720px] xl:max-w-[936px] 2xl:max-w-[1080px] pb-5'>
-          {imgs.map((img) => (
+      <div className='sm:flex sm:justify-between sm:items-center'>
+        <div className='hidden sm:flex flex-1 items-center gap-2 my-4'>
+          <Input
+            type='text'
+            placeholder='Search'
+            className='w-full max-w-sm'
+            onChange={handleSearch}
+          />
+          <DropdownFilter mode={mode} setMode={handleFilterChange} />
+        </div>
+        <SaveBtn
+          className='w-full max-w-40 sm:ml-2 sm:block hidden'
+          initialPlayedChamps={initialPlayedChamps}
+          clubId={clubId}
+          userId={params.id}
+          playedChamps={playedChamps}
+        />
+        <div className='flex flex-col justify-center items-center sm:hidden mt-4 mb-2'>
+          <div className='flex gap-1.5'>
+            <Input
+              type='text'
+              placeholder='Search'
+              className='w-full max-w-sm'
+              onChange={handleSearch}
+            />
+            <DropdownFilter mode={mode} setMode={handleFilterChange} />
+          </div>
+          <SaveBtn
+            className='my-4 w-full max-w-40 sm:ml-2'
+            initialPlayedChamps={initialPlayedChamps}
+            clubId={clubId}
+            userId={params.id}
+            playedChamps={playedChamps}
+          />
+        </div>
+      </div>
+
+      {/* 
+          if query search returns no results
+        */}
+      {filteredImgs?.length === 0 && (
+        <h3 className='text-center text-foreground text-3xl py-32'>No champions found</h3>
+      )}
+
+      {/* 
+            if user has played all champions and mode is 'unplayed'
+        */}
+      {mode === "unplayed" && hasPlayedAllChampions && (
+        <div className='col-span-full text-center text-foreground'>
+          You have played all the champions
+        </div>
+      )}
+
+      {filteredImgs.length > 0 && (
+        <div className='grid grid-cols-4 sm:grid-cols-8 md:grid-cols-9 lg:grid-cols-10 xl:grid-cols-13 2xl:grid-cols-15 gap-1.5 pb-5'>
+          {filteredImgs.map((img) => (
             <Champion
               key={img.name}
               url={img.img_url}

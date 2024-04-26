@@ -20,7 +20,7 @@ export default async function page({ params }: Props) {
   }
 
   return (
-    <section className='flex flex-1 flex-col items-center pt-16'>
+    <section className='flex flex-1 items-center flex-col pt-16'>
       <div className='flex flex-col'>
         <h1 className='mb-4 text-4xl text-center font-semibold'>Champion Challenge</h1>
       </div>

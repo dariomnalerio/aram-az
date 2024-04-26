@@ -26,11 +26,8 @@ export function ClubSection({ options }: ClubSectionType) {
   }, [options]);
 
   return (
-    <div>
-      <div className='flex flex-col items-center sm:items-start sm:flex-row gap-4 pt-6'>
-        <h2 className='text-2xl font-medium'>Select a Club</h2>
-        <SelectClub options={options} onChange={onChange} />
-      </div>
+    <div className='w-full max-w-[288px] sm:max-w-[576px] md:max-w-[648px] lg:max-w-[720px] xl:max-w-[936px] 2xl:max-w-[1080px] flex flex-col'>
+      <SelectClub options={options} onChange={onChange} />
       <ChallengeSection clubId={value} />
     </div>
   );

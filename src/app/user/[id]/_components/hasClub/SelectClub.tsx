@@ -21,7 +21,7 @@ type SelectClubType = {
 export default function SelectClub({ onChange, options }: SelectClubType) {
   return (
     <Select onValueChange={onChange} defaultValue={options[0].value}>
-      <SelectTrigger className='w-[180px]'>
+      <SelectTrigger className='w-[180px]  self-center sm:self-start'>
         <SelectValue placeholder='Select Club' />
       </SelectTrigger>
       <SelectContent className='bg-background'>
