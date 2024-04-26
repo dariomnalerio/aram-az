@@ -26,12 +26,12 @@ export function ClubSection({ options }: ClubSectionType) {
   }, [options]);
 
   return (
-    <>
+    <div>
       <div className='flex flex-col items-center sm:items-start sm:flex-row gap-4 pt-6'>
         <h2 className='text-2xl font-medium'>Select a Club</h2>
         <SelectClub options={options} onChange={onChange} />
       </div>
       <ChallengeSection clubId={value} />
-    </>
+    </div>
   );
 }

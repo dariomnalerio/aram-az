@@ -11,6 +11,7 @@ import { ChampImg, PlayedChamps } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SaveBtn } from "./SaveBtn";
+import { toast } from "sonner";
 
 type ChallengeSectionProps = {
   clubId: string;
@@ -50,7 +51,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     getImages();
   }, [imgs]);
 
-  const handleOnClick = (champId: string) => {
+  const handleChampionClick = (champId: string) => {
     // add to playedChamps
     const isChampPlayed = playedChamps?.some((champ) => champ.champion_id === champId);
 
@@ -65,43 +66,17 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     }
   };
 
-  const handleSave = async () => {
-    // TODO: improve handlign
-    if (!playedChamps) return;
-
-    // get champs to add
-    const previouslyPlayedChamps = initialPlayedChamps.current ?? [];
-
-    // get champs to add
-    const champsToAdd = playedChamps?.filter(
-      (champ) => !previouslyPlayedChamps.some((c) => c.champion_id === champ.champion_id)
-    );
-
-    // get champs to delete
-    const champsToDelete = previouslyPlayedChamps?.filter(
-      (champ) => !playedChamps.some((c) => c.champion_id === champ.champion_id)
-    );
-
-    // add champs to club
-    if (champsToAdd.length > 0) {
-      const response = await addPlayedChampsToClub({ clubId, userId: params.id, champsToAdd });
-    }
-
-    // remove champs from club
-    if (champsToDelete.length > 0) {
-      const response = await removePlayedChampsFromClub({
-        clubId,
-        userId: params.id,
-        champsToDelete,
-      });
-    }
-  };
-
   return (
     <>
-      <SaveBtn handleSave={handleSave} className='my-4' />
+      <SaveBtn
+        className='my-4 w-full max-w-40'
+        initialPlayedChamps={initialPlayedChamps}
+        clubId={clubId}
+        userId={params.id}
+        playedChamps={playedChamps}
+      />
       {imgs.length > 0 && (
-        <div className='grid flex-grid gap-1.5 max-w-[288px] sm:max-w-[576px] md:max-w-[648px] lg:max-w-[720px] xl:max-w-[936px] 2xl:max-w-[1080px]'>
+        <div className='grid flex-grid gap-1.5 max-w-[288px] sm:max-w-[576px] md:max-w-[648px] lg:max-w-[720px] xl:max-w-[936px] 2xl:max-w-[1080px] pb-5'>
           {imgs.map((img) => (
             <Champion
               key={img.name}
@@ -110,7 +85,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
               className={cn("transition hover:scale-110", {
                 "opacity-20": playedChamps?.some((champ) => champ.champion_id === img.id),
               })}
-              onClick={() => handleOnClick(img.id)}
+              onClick={() => handleChampionClick(img.id)}
             />
           ))}
         </div>
