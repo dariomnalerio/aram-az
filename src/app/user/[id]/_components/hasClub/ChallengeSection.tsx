@@ -26,7 +26,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   const initialPlayedChamps = useRef<PlayedChamps>([]);
 
   const hasPlayedAllChampions = playedChamps?.length === 167;
-  const noChampionsPlayed = playedChamps?.length === 0;
+  const noChampionsPlayed = initialPlayedChamps.current?.length === 0;
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
