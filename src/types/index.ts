@@ -5,6 +5,13 @@ export type Option = {
 
 export type Mode = "all" | "played" | "unplayed";
 
+export type Club = {
+  club_id: string;
+  user_id: string;
+  created_at: string;
+  name?: string;
+};
+
 export type UserClub = {
   user_id: string;
   club_id: string;
@@ -22,3 +29,8 @@ export type PlayedChamps =
     }[]
   | null
   | undefined;
+
+export type Options = {
+  value: string;
+  label: string;
+};
