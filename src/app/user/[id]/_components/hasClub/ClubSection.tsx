@@ -1,12 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import SelectClub from "./SelectClub";
 import { ChallengeSection } from "./ChallengeSection";
-
-type Options = {
-  value: string;
-  label: string;
-};
+import SelectClub from "@/components/Clubs/SelectClub";
+import { Options } from "@/types";
 
 type ClubSectionType = {
   options: Options[];

@@ -2,7 +2,7 @@ import { getUserPlayedChampsByClub } from "@/app/actions";
 import { getChampImages } from "@/app/actions/images/get-champ-images";
 import { Champion } from "@/components/Champion";
 import { cn } from "@/lib/utils";
-import { ChampImg, Mode, PlayedChamps } from "@/types/types";
+import { ChampImg, Mode, PlayedChamps } from "@/types";
 import { useParams, usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SaveBtn } from "./SaveBtn";

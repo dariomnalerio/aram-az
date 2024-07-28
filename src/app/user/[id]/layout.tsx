@@ -1,6 +1,6 @@
 import { getUser, getUserClubs } from "@/app/actions";
 import { Unauthorized } from "@/components/Misc/Unauthorized";
-import { UserClub } from "@/types/types";
+import { UserClub } from "@/types";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";

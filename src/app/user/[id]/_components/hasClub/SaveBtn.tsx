@@ -1,6 +1,6 @@
 import { addPlayedChampsToClub, removePlayedChampsFromClub } from "@/app/actions";
 import { Button } from "@/components/ui/button";
-import { PlayedChamps } from "@/types/types";
+import { PlayedChamps } from "@/types";
 import { MutableRefObject } from "react";
 import { toast } from "sonner";
 

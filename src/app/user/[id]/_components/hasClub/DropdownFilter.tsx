@@ -6,7 +6,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Mode } from "@/types/types";
+import { Mode } from "@/types";
 
 type ChampionFilterProps = {
   mode: Mode;
