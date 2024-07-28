@@ -1,16 +1,18 @@
-"use server"
-import { PlayedChamps } from "@/types/types";
+"use server";
+import { PlayedChamps } from "@/types";
 import { createClient } from "@/lib/supabase/server";
 
 type AddPlayedChampsToClub = {
   clubId: string;
   userId: string;
   champsToAdd: PlayedChamps;
+};
 
-}
-
-export async function addPlayedChampsToClub({ clubId, userId, champsToAdd }: AddPlayedChampsToClub) {
-
+export async function addPlayedChampsToClub({
+  clubId,
+  userId,
+  champsToAdd,
+}: AddPlayedChampsToClub) {
   if (!clubId || !userId || !champsToAdd) {
     throw new Error("Missing required fields");
   }
@@ -21,10 +23,9 @@ export async function addPlayedChampsToClub({ clubId, userId, champsToAdd }: Add
     user_id: userId,
     club_id: clubId,
     champion_id: champ.champion_id,
-  }))
+  }));
 
+  const response = await supabase.from("club_member_champion_played").upsert(data);
 
-  const response = await supabase.from("club_member_champion_played").upsert(data)
-
-  return response
+  return response;
 }

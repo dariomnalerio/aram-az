@@ -1,16 +1,18 @@
-"use server"
+"use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { Club } from "@/types";
+import { PostgrestError } from "@supabase/supabase-js";
 
-export async function getUserClubs(userId: string, options?: { name?: boolean }) {
+export async function getUserClubs(
+  userId: string,
+  options?: { name?: boolean }
+): Promise<{ data: Club[] | null; error: PostgrestError | null }> {
   if (!userId) throw new Error("User ID is required");
 
   const supabase = createClient();
 
-  const { data, error } = await supabase
-    .from("club_members")
-    .select("*")
-    .eq("user_id", userId);
+  const { data, error } = await supabase.from("club_members").select("*").eq("user_id", userId);
 
   // If the name option is set to true, we will fetch the club name from the clubs table
   if (options?.name && data) {

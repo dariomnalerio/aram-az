@@ -1,5 +1,5 @@
 "use server";
-import { PlayedChamps } from "@/types/types";
+import { PlayedChamps } from "@/types";
 import { createClient } from "@/lib/supabase/server";
 
 type RemovePlayedChampsToClub = {
