@@ -6,15 +6,16 @@ import googleIcon from "@/assets/google-ico.svg";
 
 type ProviderButtonProps = {
   provider: "discord" | "google";
-  handleLogin: () => void;
+  handleLogin: (clubId: string) => void;
+  clubId?: string;
 };
 
-export default function ProviderButton({ provider, handleLogin }: ProviderButtonProps) {
+export default function ProviderButton({ provider, handleLogin, clubId }: ProviderButtonProps) {
   const icon = provider === "discord" ? discordIcon : googleIcon;
 
   return (
     <Button
-      onClick={() => handleLogin()}
+      onClick={() => handleLogin(clubId ?? "")}
       size={"xl"}
       variant={"outline"}
       type='button'
