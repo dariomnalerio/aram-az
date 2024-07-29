@@ -15,6 +15,21 @@ export type Club = {
 export type UserClub = {
   user_id: string;
   club_id: string;
+  username?: string;
+};
+
+export type UserClubChamp = {
+  user_id: string;
+  club_id: string;
+  champion_id: string;
+  created_at: string;
+};
+
+export type ClubMemberWithChampions = {
+  clubId: string;
+  userId: string;
+  username: string;
+  champions: string[];
 };
 
 export type ChampImg = {
