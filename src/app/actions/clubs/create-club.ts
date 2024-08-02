@@ -8,11 +8,13 @@ export async function createClub(formData: FormData) {
 
   const schema = z.object({
     clubName: z.string().min(1, { message: "Club name is required" }),
+    username: z.string().min(3).max(20),
     userId: z.string().min(1),
   });
 
   const formRawData = schema.parse({
     clubName: formData.get("clubName"),
+    username: formData.get("username"),
     userId: formData.get("userId"),
   });
 
@@ -28,8 +30,8 @@ export async function createClub(formData: FormData) {
       const { status } = await joinClub({
         clubId,
         userId: formRawData.userId,
-        username: "Unknown",
-      }); //TODO: add username to club creation
+        username: formRawData.username,
+      });
     }
   }
 }

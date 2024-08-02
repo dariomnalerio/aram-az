@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
-import { getUser, getUserClubs } from "../actions";
+import { createClub, getUser, getUserClubs } from "../actions";
 import { Option } from "@/types";
 import { SelectClubSection } from "./_components/SelectClubSection";
 import { Button } from "@/components/ui/button";
 import { InviteButton } from "./_components/InviteButton";
+import { CreateClubDialog } from "@/components/Clubs/CreateClubDialog";
+import { revalidatePath } from "next/cache";
 
 type Props = {
   children: React.ReactNode;
@@ -26,15 +28,25 @@ export default async function layout({ children }: Props) {
     }));
   }
 
+  const handleCreateClub = async (formData: FormData) => {
+    "use server";
+    await createClub(formData);
+    revalidatePath("/clubs");
+  };
+
   return (
-    <section className='flex flex-col items-center'>
-      <div className='flex justify-center gap-10 pt-16'>
-        <h1 className='mb-4 text-3xl sm:text-4xl text-center font-semibold'>Explore Your Clubs</h1>
+    <section className='flex flex-col items-center mx-4'>
+      <div className='flex justify-center gap-10 pt-10 pb-16'>
+        <h1 className=' text-3xl sm:text-4xl text-center font-semibold'>Explore Your Clubs</h1>
       </div>
       <div className='container'>
-        <div className='flex gap-2 items-center'>
-          <SelectClubSection options={options ?? []} />
-          <InviteButton />
+        <div className='flex gap-2 items-center justify-center sm:justify-between flex-wrap'>
+          <div className='flex flex-wrap justify-center items-center gap-2'>
+            <SelectClubSection options={options ?? []} />
+            <InviteButton />
+          </div>
+
+          <CreateClubDialog userId={user.id} createClub={handleCreateClub} />
         </div>
         {children}
       </div>

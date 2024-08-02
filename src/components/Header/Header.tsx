@@ -4,13 +4,9 @@ import logo from "@/assets/logo.svg";
 import Link from "next/link";
 import Image from "next/image";
 import { Separator } from "../ui/separator";
-import { createClient } from "@/lib/supabase/server";
 import { getUser, handleLogout } from "@/app/actions/";
 
 export default async function Header() {
-  //const user = false;
-  const supabase = createClient();
-
   const { user } = await getUser();
 
   return (
@@ -26,14 +22,16 @@ export default async function Header() {
         </div>
         <div className='flex items-center gap-3 md:gap-8'>
           <div className='hidden gap-9 min-[600px]:flex'>
-            <Link href='#' className='transition hover:scale-105'>
-              {" "}
-              How it works{" "}
-            </Link>
-            <Link href='#' className='transition hover:scale-105'>
-              {" "}
-              Leaderboard{" "}
-            </Link>
+            {!user && (
+              <Link href='#' className='hover:underline underline-offset-4'>
+                Demo
+              </Link>
+            )}
+            {user && (
+              <Link href='/clubs' className='hover:underline underline-offset-4'>
+                Clubs
+              </Link>
+            )}
           </div>
 
           {!user && (
@@ -59,7 +57,7 @@ export default async function Header() {
           )}
         </div>
       </nav>
-      <Separator className='h-[0.2px] w-full bg-foreground/70' />
+      <Separator className='h-[0.1px] w-full bg-primary/20' />
     </header>
   );
 }

@@ -30,19 +30,27 @@ export function CreateClubDialog({
         <form action={createClub}>
           <DialogHeader>
             <DialogTitle>Create a new club</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className='py-2'>
               Create a new club and invite your friends to join the challenge!
             </DialogDescription>
           </DialogHeader>
 
-          <div>
-            <Label htmlFor='clubName'>Name</Label>
-            <Input id='clubName' name='clubName' />
+          <div className='flex flex-col gap-4'>
+            <div>
+              <Label htmlFor='clubName'>Club Name</Label>
+              <Input id='clubName' name='clubName' className='mt-1' />
+            </div>
+            <div>
+              <Label htmlFor='username'>Username</Label>
+              <Input id='username' name='username' className='mt-1' />
+            </div>
             <input id='userId' name='userId' type='hidden' value={userId} />
           </div>
-          <DialogFooter>
+          <DialogFooter className='mt-4'>
             <DialogClose asChild>
-              <Button type='submit'>Create</Button>
+              <Button type='submit' className='w-full'>
+                Create new club
+              </Button>
             </DialogClose>
           </DialogFooter>
         </form>
