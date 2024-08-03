@@ -18,16 +18,6 @@ export async function leaveClub(formData: FormData) {
 
   const { userId, clubId } = formRawData;
 
-  // check if user is owner
-  const { data: clubData } = await supabase.from("clubs").select("*").eq("id", clubId);
-
-  if (clubData && clubData[0].club_owner_id === userId) {
-    return {
-      error: "Cannot leave club as owner while there are members in the club",
-      status: 400,
-    };
-  }
-
   const response = await supabase
     .from("club_members")
     .delete()
