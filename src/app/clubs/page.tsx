@@ -28,9 +28,20 @@ export default async function ClubView({ searchParams: { club: clubId } }: Props
 
   const champCount = await getChampsCount();
 
+  const sortedClubInfo = clubInfo
+    .map((member) => {
+      const completedChamps = member.champions.length;
+      const completionRate = (completedChamps / champCount!) * 100;
+      return {
+        ...member,
+        completionRate,
+      };
+    })
+    .sort((a, b) => b.completionRate - a.completionRate);
+
   return (
     <div className='mt-10'>
-      {clubInfo?.map((member) => (
+      {sortedClubInfo?.map((member) => (
         <div
           key={member.userId}
           className='flex flex-col sm:flex-row items-center gap-4 border bg-primary/10 p-4 rounded-lg shadow-lg w-full'
