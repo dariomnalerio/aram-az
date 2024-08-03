@@ -49,7 +49,6 @@ export function ClubSection({ options }: ClubSectionType) {
           onChange={onChange}
           defaultValue={searchParams.get("club") && searchParams.get("club")}
         />
-        <Button variant={"destructive"}>Leave Club</Button>
       </div>
       <ChallengeSection clubId={value} />
     </div>

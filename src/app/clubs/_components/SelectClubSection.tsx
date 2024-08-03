@@ -48,7 +48,11 @@ export function SelectClubSection({ options }: SelectClubType) {
 
   return (
     <>
-      <SelectClub options={options} onChange={onChange} defaultValue={value} />
+      <SelectClub
+        options={options}
+        onChange={onChange}
+        defaultValue={searchParams.get("club") && searchParams.get("club")}
+      />
     </>
   );
 }
