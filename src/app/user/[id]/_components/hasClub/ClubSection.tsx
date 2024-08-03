@@ -48,7 +48,7 @@ export function ClubSection({ options }: ClubSectionType) {
         onChange={onChange}
         defaultValue={searchParams.get("club") && searchParams.get("club")}
       />
-      <ChallengeSection clubId={value} />
+      <ChallengeSection />
     </div>
   );
 }
