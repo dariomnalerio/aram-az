@@ -1,6 +1,7 @@
 "use server";
 import { PlayedChamps } from "@/types";
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 type AddPlayedChampsToClub = {
   clubId: string;
@@ -26,6 +27,7 @@ export async function addPlayedChampsToClub({
   }));
 
   const response = await supabase.from("club_member_champion_played").upsert(data);
+  revalidatePath(`/clubs/${clubId}`);
 
   return response;
 }

@@ -13,16 +13,16 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Aram-AZ",
+  title: "Aram-AZ | Landing Page",
   description:
     "Aram-AZ is a platform for League of Legends players who want to take part in the AZ challenge.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+type Props = {
   children: React.ReactNode;
-}>) {
+};
+
+export default function RootLayout({ children }: Props) {
   return (
     <html lang='en'>
       <body

@@ -16,8 +16,7 @@ type Props = {
 
 export const metadata: Metadata = {
   title: "ARAM-AZ | User Profile",
-  description:
-    "User profile page. This page is only accessible to the user itself. Here you can edit the champions you have played for each club.",
+  description: "User profile page. Here you can edit the champions you have played for each club.",
 };
 
 export default async function Layout({ children, noclub, hasclub, params }: Props) {
@@ -30,7 +29,9 @@ export default async function Layout({ children, noclub, hasclub, params }: Prop
     return <Unauthorized />;
   } else {
     const { data } = await getUserClubs(user.id);
-    if (data) userClubs = data;
+    if (data) {
+      userClubs = data;
+    }
   }
 
   return (

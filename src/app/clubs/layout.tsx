@@ -2,16 +2,21 @@ import { redirect } from "next/navigation";
 import { createClub, getUser, getUserClubs } from "../actions";
 import { Option } from "@/types";
 import { SelectClubSection } from "./_components/SelectClubSection";
-import { Button } from "@/components/ui/button";
 import { InviteButton } from "./_components/InviteButton";
 import { CreateClubDialog } from "@/components/Clubs/CreateClubDialog";
 import { revalidatePath } from "next/cache";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Aram-AZ | Clubs",
+  description: "Clubs page. Here you can see each club's data.",
+};
 type Props = {
   children: React.ReactNode;
+  noClub: React.ReactNode;
 };
 
-export default async function layout({ children }: Props) {
+export default async function layout({ children, noClub }: Props) {
   const { user } = await getUser();
   if (!user) {
     redirect("/login");
@@ -40,7 +45,7 @@ export default async function layout({ children }: Props) {
         <h1 className=' text-3xl sm:text-4xl text-center font-semibold'>Explore Your Clubs</h1>
       </div>
       <div className='container'>
-        <div className='flex gap-2 items-center justify-center sm:justify-between flex-wrap'>
+        <div className='flex gap-6 sm:gap-2 items-center justify-center sm:justify-between flex-wrap'>
           <div className='flex flex-wrap justify-center items-center gap-2'>
             <SelectClubSection options={options ?? []} />
             <InviteButton />
@@ -50,6 +55,7 @@ export default async function layout({ children }: Props) {
         </div>
         {children}
       </div>
+      {userClubs && userClubs.length === 0 && noClub}
     </section>
   );
 }

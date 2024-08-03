@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
   return (
     <section className='flex-1 flex justify-center md:items-center mt-20 md:mt-0 md:px-10 px-1'>
-      <div className='relative md:aspect-video max-w-[1200px]'>
+      {/* <div className='relative md:aspect-video max-w-[1200px]'>
         <Image
           src={aram}
           alt='ARAM-AZ'
@@ -16,7 +16,7 @@ export default function Home() {
           <h1 className='font-bold text-3xl md:text-5xl text-black/80 text-center'>
             ARAM-AZ Challenge!
           </h1>
-          <p className='font-medium  text-lime-300 text-center text-balance'>
+          <p className='font-medium  text-white text-center text-balance'>
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste earum eligendi laborum
             doloribus laboriosam excepturi perferendis eos voluptates commodi!
           </p>
@@ -25,6 +25,20 @@ export default function Home() {
             <Link href={`/login`}>Get Started</Link>
           </Button>
         </div>
+      </div> */}
+
+      <div className='flex flex-col gap-6 lg:gap-10 items-center top-0 md:h-full md:place-content-center px-2'>
+        <h1 className='font-bold text-3xl md:text-5xl text-white text-center'>
+          ARAM-AZ Challenge!
+        </h1>
+        <p className='font-medium  text-white/80 text-center text-balance'>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste earum eligendi laborum
+          doloribus laboriosam excepturi perferendis eos voluptates commodi!
+        </p>
+
+        <Button asChild className='max-w-[10rem] w-full'>
+          <Link href={`/login`}>Get Started</Link>
+        </Button>
       </div>
     </section>
   );

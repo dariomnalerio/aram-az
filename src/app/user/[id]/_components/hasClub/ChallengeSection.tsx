@@ -23,10 +23,11 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   const [imgs, setImgs] = useState<ChampImg[]>([]);
   const [filteredImgs, setFilteredImgs] = useState<ChampImg[]>([]);
   const [playedChamps, setPlayedChamps] = useState<PlayedChamps>([]);
-  const initialPlayedChamps = useRef<PlayedChamps>([]);
+  // const initialPlayedChamps = useRef<PlayedChamps>([]);
+  const [initialPlayedChamps, setInitialPlayedChamps] = useState<PlayedChamps>([]);
 
   const hasPlayedAllChampions = playedChamps?.length === 167;
-  const noChampionsPlayed = initialPlayedChamps.current?.length === 0;
+  const noChampionsPlayed = initialPlayedChamps?.length === 0;
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -61,7 +62,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
       });
       if (response) {
         setPlayedChamps(response.data);
-        initialPlayedChamps.current = response.data;
+        setInitialPlayedChamps(response.data);
       }
     };
 
@@ -99,14 +100,12 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
 
       if (mode === "played") {
         return (
-          initialPlayedChamps.current?.some((champ) => champ.champion_id === champion.id) &&
-          nameMatches
+          initialPlayedChamps?.some((champ) => champ.champion_id === champion.id) && nameMatches
         );
       }
       if (mode === "unplayed")
         return (
-          !initialPlayedChamps.current?.some((champ) => champ.champion_id === champion.id) &&
-          nameMatches
+          !initialPlayedChamps?.some((champ) => champ.champion_id === champion.id) && nameMatches
         );
     });
 
@@ -117,6 +116,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     searchParams,
     pathname,
     router,
+    initialPlayedChamps,
     createQueryString,
     getMode,
     getSearchQuery,
@@ -125,7 +125,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   // on leave page
   useEffect(() => {
     function beforeUnload(e: BeforeUnloadEvent) {
-      if (JSON.stringify(initialPlayedChamps.current) !== JSON.stringify(playedChamps)) {
+      if (JSON.stringify(initialPlayedChamps) !== JSON.stringify(playedChamps)) {
         e.preventDefault();
       }
     }
@@ -135,7 +135,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
     return () => {
       window.removeEventListener("beforeunload", beforeUnload);
     };
-  }, [playedChamps]);
+  }, [playedChamps, initialPlayedChamps]);
 
   const handleChampionClick = (champId: string) => {
     // add to playedChamps
@@ -189,6 +189,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
           clubId={clubId}
           userId={params.id}
           playedChamps={playedChamps}
+          setInitialPlayedChamps={setInitialPlayedChamps}
         />
         <div className='flex flex-col justify-center items-center sm:hidden mt-4 mb-2'>
           <div className='flex gap-1.5'>
@@ -206,6 +207,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
             clubId={clubId}
             userId={params.id}
             playedChamps={playedChamps}
+            setInitialPlayedChamps={setInitialPlayedChamps}
           />
         </div>
       </div>

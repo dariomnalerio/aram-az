@@ -1,7 +1,13 @@
 import logo from "@/assets/logo.svg";
 import Image from "next/image";
 import ProviderButton from "./_components/ProviderButton";
-import { handleDiscordLogin, handleGoogleLogin } from "../actions";
+import { handleDiscordLogin } from "../actions";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Aram-AZ | Login",
+  description: "Login to Aram-AZ to continue.",
+};
 
 type Props = {
   searchParams: {
@@ -10,7 +16,7 @@ type Props = {
 };
 export default async function Page({ searchParams: { club: clubId } }: Props) {
   return (
-    <div className='flex-1 flex flex-col justify-center items-center'>
+    <div className='flex-1 flex flex-col justify-center items-center mb-20'>
       <div className='mb-5 flex flex-col items-center gap-3'>
         <div className=' flex items-center justify-center gap-2'>
           <Image src={logo} alt='ARAM-AZ Logo' className='h-6 w-6' />
@@ -24,7 +30,7 @@ export default async function Page({ searchParams: { club: clubId } }: Props) {
         )}
       </div>
       <ProviderButton provider='discord' clubId={clubId} handleLogin={handleDiscordLogin} />
-      <ProviderButton provider='google' clubId={clubId} handleLogin={handleGoogleLogin} />
+      {/* <ProviderButton provider='google' clubId={clubId} handleLogin={handleGoogleLogin} /> */}
     </div>
   );
 }

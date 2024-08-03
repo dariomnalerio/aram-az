@@ -1,29 +1,52 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ChallengeSection } from "./ChallengeSection";
 import SelectClub from "@/components/Clubs/SelectClub";
 import { Options } from "@/types";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type ClubSectionType = {
   options: Options[];
 };
 
 export function ClubSection({ options }: ClubSectionType) {
+  const searchParams = useSearchParams();
   const [value, setValue] = useState("");
-
-  const onChange = (value: string) => {
-    setValue(value);
+  const router = useRouter();
+  const onChange = (newValue: string) => {
+    setValue(newValue);
+    const newQueryString = createQueryString("club", newValue);
+    router.replace(`?${newQueryString}`);
   };
 
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   useEffect(() => {
-    if (options && options.length > 0) {
-      setValue(options[0].value);
+    const club = searchParams.get("club");
+    if (club) {
+      setValue(club);
+    } else {
+      const defaultClub = options[0].value;
+      setValue(defaultClub);
+      const newQueryString = createQueryString("club", defaultClub);
+      router.replace(`?${newQueryString}`);
     }
-  }, [options]);
+  }, [value, options, searchParams, createQueryString, router]);
 
   return (
     <div className='w-full max-w-[288px] sm:max-w-[576px] md:max-w-[648px] lg:max-w-[720px] xl:max-w-[936px] 2xl:max-w-[1080px] flex flex-col'>
-      <SelectClub options={options} onChange={onChange} />
+      <SelectClub
+        options={options}
+        onChange={onChange}
+        defaultValue={searchParams.get("club") && searchParams.get("club")}
+      />
       <ChallengeSection clubId={value} />
     </div>
   );

@@ -1,6 +1,7 @@
 "use server";
 import { PlayedChamps } from "@/types";
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 type RemovePlayedChampsToClub = {
   clubId: string;
@@ -19,11 +20,6 @@ export async function removePlayedChampsFromClub({
 
   const supabase = createClient();
 
-  const data = champsToDelete.map((champ) => ({
-    user_id: userId,
-    club_id: clubId,
-    champion_id: champ.champion_id,
-  }));
   const response = await supabase
     .from("club_member_champion_played")
     .delete()
@@ -33,6 +29,8 @@ export async function removePlayedChampsFromClub({
       "champion_id",
       champsToDelete.map((champ) => champ.champion_id)
     );
+
+  revalidatePath(`/clubs/${clubId}`);
 
   return response;
 }

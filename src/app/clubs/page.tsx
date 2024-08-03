@@ -34,16 +34,16 @@ export default async function ClubView({ searchParams: { club: clubId } }: Props
       {clubInfo?.map((member) => (
         <div
           key={member.userId}
-          className='flex flex-col sm:flex-row items-center gap-4 border bg-primary/10 p-4 rounded-lg shadow-lg w-fit'
+          className='flex flex-col sm:flex-row items-center gap-4 border bg-primary/10 p-4 rounded-lg shadow-lg w-full'
         >
           <div className='flex flex-col gap-1 items-start sm:items-center justify-around p-2 rounded-md'>
-            <UserPicture username={member.username} userId={member.userId} />
+            <UserPicture username={member.username} userId={member.userId} clubId={clubId} />
             <UserStats member={member} champCount={champCount!} />
           </div>
 
           {/* Latest played champs */}
-          <div>
-            <ul className='flex flex-1 gap-1 flex-wrap justify-center xs:justify-start'>
+          <div className='w-full'>
+            <ul className='flex gap-1 flex-wrap justify-center sm:justify-normal'>
               {member.champions.length > 0 &&
                 member.champions.slice(0, 12).map((champ) => (
                   <li key={champ}>

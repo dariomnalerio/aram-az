@@ -1,7 +1,8 @@
 import { addPlayedChampsToClub, removePlayedChampsFromClub } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { PlayedChamps } from "@/types";
-import { MutableRefObject } from "react";
+import { revalidatePath } from "next/cache";
+import { Dispatch, MutableRefObject, SetStateAction } from "react";
 import { toast } from "sonner";
 
 type SaveBtnProps = {
@@ -9,7 +10,8 @@ type SaveBtnProps = {
   clubId: string;
   userId: string;
   playedChamps: PlayedChamps;
-  initialPlayedChamps: MutableRefObject<PlayedChamps>;
+  initialPlayedChamps: PlayedChamps;
+  setInitialPlayedChamps: Dispatch<SetStateAction<PlayedChamps>>;
 };
 
 export function SaveBtn({
@@ -18,20 +20,17 @@ export function SaveBtn({
   userId,
   playedChamps,
   initialPlayedChamps,
+  setInitialPlayedChamps,
 }: SaveBtnProps) {
   const handleSave = async () => {
-    // TODO: improve handling
     if (!playedChamps) return;
 
-    // get champs to add
-    const previouslyPlayedChamps = initialPlayedChamps.current ?? [];
+    const previouslyPlayedChamps = initialPlayedChamps ?? [];
 
-    // get champs to add
     const champsToAdd = playedChamps?.filter(
       (champ) => !previouslyPlayedChamps.some((c) => c.champion_id === champ.champion_id)
     );
 
-    // get champs to delete
     const champsToDelete = previouslyPlayedChamps?.filter(
       (champ) => !playedChamps.some((c) => c.champion_id === champ.champion_id)
     );
@@ -56,7 +55,7 @@ export function SaveBtn({
         toast.error("Error saving changes");
       } else {
         toast.success("Changes saved");
-        initialPlayedChamps.current = playedChamps;
+        setInitialPlayedChamps(playedChamps);
       }
     }
   };
