@@ -10,7 +10,7 @@ export function InviteButton() {
   const clubId = searcParams.get("club");
 
   const handleCopyInviteLink = () => {
-    const inviteLink = `localhost:3000/join?club=${clubId}`;
+    const inviteLink = `https://aram-az.vercel.app/join?club=${clubId}`;
     navigator.clipboard
       .writeText(inviteLink)
       .then(() => {
