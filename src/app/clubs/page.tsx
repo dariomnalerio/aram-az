@@ -1,8 +1,7 @@
+import { getAllClubInfo, getChampImagesByIds, getChampsCount, getUser } from "@/app/actions";
 import { Champion } from "@/components/Champion";
-import { getAllClubInfo, getChampImagesByIds, getChampsCount, getUser } from "../actions";
 import { UserPicture } from "./_components/UserPicture";
 import { UserStats } from "./_components/UserStats";
-
 type Props = {
   searchParams: {
     club: string;
@@ -56,8 +55,8 @@ export default async function ClubView({ searchParams: { club: clubId } }: Props
                 ))}
 
               {member.champions.length === 0 && (
-                <li className='text-lg'>
-                  <span className='font-medium text-primary/80'>{member.username}</span> has not
+                <li className='text-lg text-pretty text-center w-full'>
+                  <span className='text-primary/80 font-medium'>{member.username}</span> has not
                   played any champions yet.
                 </li>
               )}

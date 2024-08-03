@@ -4,6 +4,7 @@ import { ChallengeSection } from "./ChallengeSection";
 import SelectClub from "@/components/Clubs/SelectClub";
 import { Options } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 type ClubSectionType = {
   options: Options[];
@@ -42,11 +43,14 @@ export function ClubSection({ options }: ClubSectionType) {
 
   return (
     <div className='w-full max-w-[288px] sm:max-w-[576px] md:max-w-[648px] lg:max-w-[720px] xl:max-w-[936px] 2xl:max-w-[1080px] flex flex-col'>
-      <SelectClub
-        options={options}
-        onChange={onChange}
-        defaultValue={searchParams.get("club") && searchParams.get("club")}
-      />
+      <div className='flex justify-between'>
+        <SelectClub
+          options={options}
+          onChange={onChange}
+          defaultValue={searchParams.get("club") && searchParams.get("club")}
+        />
+        <Button variant={"destructive"}>Leave Club</Button>
+      </div>
       <ChallengeSection clubId={value} />
     </div>
   );

@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createClub } from "@/app/actions/clubs/create-club";
 import { CreateClubDialog } from "./CreateClubDialog";
+import { joinClub } from "@/app/actions";
 
 type Props = {
   userId: string;
@@ -15,11 +16,8 @@ export default function NoClubSection({ userId }: Props) {
       </h2>
 
       <CreateClubDialog userId={userId} createClub={createClub} />
-      <span>or join one</span>
-      <div className='flex gap-2'>
-        <Input placeholder='Club code' className='border-secondary' />
-        <Button>Join</Button>
-      </div>
+
+      <p className='text-lg font-medium mt-5'>You can also join a club with an invitation link</p>
     </section>
   );
 }

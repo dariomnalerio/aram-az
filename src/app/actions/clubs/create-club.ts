@@ -2,6 +2,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
 import { joinClub } from "./join-club";
+import { toast } from "sonner";
+import { revalidatePath } from "next/cache";
 
 export async function createClub(formData: FormData) {
   const supabase = createClient();
@@ -18,20 +20,23 @@ export async function createClub(formData: FormData) {
     userId: formData.get("userId"),
   });
 
-  //TODO: toasts and error handling
-
   const { status } = await supabase
     .from("clubs")
     .insert({ name: formRawData.clubName, club_owner_id: formRawData.userId });
+
   if (status === 201) {
     const { data } = await supabase.from("clubs").select("id").eq("name", formRawData.clubName);
+
     if (data) {
       const clubId = data[0].id;
-      const { status } = await joinClub({
+      await joinClub({
         clubId,
         userId: formRawData.userId,
         username: formRawData.username,
       });
+
+      revalidatePath("/clubs");
+      revalidatePath(`/user/${formRawData.userId}`);
     }
   }
 }

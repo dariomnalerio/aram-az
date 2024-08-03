@@ -12,6 +12,7 @@ export function SelectClubSection({ options }: SelectClubType) {
   const searchParams = useSearchParams();
   const [value, setValue] = useState("");
   const router = useRouter();
+
   const onChange = (newValue: string) => {
     setValue(newValue);
     const newQueryString = createQueryString("club", newValue);
@@ -29,9 +30,15 @@ export function SelectClubSection({ options }: SelectClubType) {
 
   useEffect(() => {
     const club = searchParams.get("club");
+
     if (club) {
+      if (!options.find((option) => option.value === club)) {
+        const newQueryString = createQueryString("club", options[0].value);
+        router.replace(`?${newQueryString}`);
+        return;
+      }
       setValue(club);
-    } else {
+    } else if (options.length > 0) {
       const defaultClub = options[0].value;
       setValue(defaultClub);
       const newQueryString = createQueryString("club", defaultClub);
@@ -41,11 +48,7 @@ export function SelectClubSection({ options }: SelectClubType) {
 
   return (
     <>
-      <SelectClub
-        options={options}
-        onChange={onChange}
-        defaultValue={searchParams.get("club") && searchParams.get("club")}
-      />
+      <SelectClub options={options} onChange={onChange} defaultValue={value} />
     </>
   );
 }

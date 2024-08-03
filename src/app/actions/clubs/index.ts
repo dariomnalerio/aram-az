@@ -8,3 +8,4 @@ export * from "./get-all-champs-from-club";
 export * from "./get-all-champs-from-club";
 export * from "./join-club";
 export * from "./club-exists";
+export * from "./leave-club";
