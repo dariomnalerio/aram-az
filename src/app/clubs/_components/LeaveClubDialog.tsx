@@ -30,31 +30,34 @@ export function LeaveClubDialog({ userId, leaveClub }: LeaveClubDialogProps) {
     );
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant='destructive' size={"lg"}>
-          Leave Club
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <form action={leaveClub}>
-          <DialogHeader>
-            <DialogTitle>Are you sure you want to leave this club?</DialogTitle>
-            <DialogDescription className='pt-2 pb-6'>
-              You will lose access to all club features and data.
-              <input type='hidden' name='userId' value={userId} />
-              <input type='hidden' name='clubId' value={clubId} />
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className=''>
-            <DialogClose asChild>
-              <Button variant={"destructive"} type='submit' className='w-full'>
-                Leave Club
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant='destructive' size={"lg"}>
+            Leave Club
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <form action={leaveClub}>
+            <DialogHeader>
+              <DialogTitle>Are you sure you want to leave this club?</DialogTitle>
+              <DialogDescription className='pt-2 pb-6 flex flex-col gaap-1'>
+                You will lose access to all club features and data.
+                <span>Club owner cannot leave the club while there are members in the club.</span>
+                <input type='hidden' name='userId' value={userId} />
+                <input type='hidden' name='clubId' value={clubId} />
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className=''>
+              <DialogClose asChild>
+                <Button variant={"destructive"} type='submit' className='w-full'>
+                  Leave Club
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

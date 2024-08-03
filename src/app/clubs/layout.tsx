@@ -50,7 +50,7 @@ export default async function layout({ children }: Props) {
   return (
     <>
       {userClubs && userClubs.length > 0 && (
-        <section className='flex flex-col items-center mx-4'>
+        <section className='flex flex-col items-center mx-4 mb-20'>
           <div className='flex justify-center gap-10 pt-10 pb-16'>
             <h1 className=' text-3xl sm:text-4xl text-center font-semibold'>Explore Your Clubs</h1>
           </div>

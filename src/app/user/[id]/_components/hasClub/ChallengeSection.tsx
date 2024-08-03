@@ -10,11 +10,7 @@ import { DropdownFilter } from "./DropdownFilter";
 import { Input } from "@/components/ui/input";
 import { ImageGridSkeleton } from "./ImageGridSkeleton";
 
-type ChallengeSectionProps = {
-  clubId: string;
-};
-
-export function ChallengeSection({ clubId }: ChallengeSectionProps) {
+export function ChallengeSection() {
   const params = useParams<{ id: string }>();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -25,7 +21,7 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
   const [playedChamps, setPlayedChamps] = useState<PlayedChamps>([]);
   // const initialPlayedChamps = useRef<PlayedChamps>([]);
   const [initialPlayedChamps, setInitialPlayedChamps] = useState<PlayedChamps>([]);
-
+  const clubId = searchParams.get("club");
   const hasPlayedAllChampions = playedChamps?.length === 167;
   const noChampionsPlayed = initialPlayedChamps?.length === 0;
 
@@ -56,6 +52,8 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
 
   useEffect(() => {
     const getData = async () => {
+      if (!clubId) return;
+
       const response = await getUserPlayedChampsByClub({
         clubId,
         userId: params.id,
@@ -136,6 +134,8 @@ export function ChallengeSection({ clubId }: ChallengeSectionProps) {
       window.removeEventListener("beforeunload", beforeUnload);
     };
   }, [playedChamps, initialPlayedChamps]);
+
+  if (!clubId) return null;
 
   const handleChampionClick = (champId: string) => {
     // add to playedChamps

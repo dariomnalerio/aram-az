@@ -40,7 +40,7 @@ export default async function ClubView({ searchParams: { club: clubId } }: Props
     .sort((a, b) => b.completionRate - a.completionRate);
 
   return (
-    <div className='mt-10'>
+    <div className='mt-10 flex flex-col gap-4'>
       {sortedClubInfo?.map((member) => (
         <div
           key={member.userId}
