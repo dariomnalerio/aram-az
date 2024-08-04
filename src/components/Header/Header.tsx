@@ -31,7 +31,7 @@ export default async function Header() {
         <div className='hidden sm:flex items-center gap-3 md:gap-8'>
           <div className='hidden gap-9 min-[600px]:flex'>
             {!user && (
-              <Link href='#' className='hover:underline underline-offset-4'>
+              <Link href='/demo' className='hover:underline underline-offset-4'>
                 Demo
               </Link>
             )}
