@@ -173,44 +173,49 @@ export function ChallengeSection() {
 
   return (
     <>
-      <div className='sm:flex sm:justify-between sm:items-center'>
-        <div className='hidden sm:flex flex-1 items-center gap-2 my-4'>
-          <Input
-            type='text'
-            placeholder='Search'
-            className='w-full max-w-sm'
-            onChange={handleSearch}
-          />
-          <DropdownFilter mode={getMode()} setMode={handleFilterChange} />
-        </div>
-        <SaveBtn
-          className='w-full max-w-40 sm:ml-2 sm:block hidden'
-          initialPlayedChamps={initialPlayedChamps}
-          clubId={clubId}
-          userId={params.id}
-          playedChamps={playedChamps}
-          setInitialPlayedChamps={setInitialPlayedChamps}
-        />
-        <div className='flex flex-col justify-center items-center sm:hidden mt-4 mb-2'>
-          <div className='flex gap-1.5'>
-            <Input
-              type='text'
-              placeholder='Search'
-              className='w-full max-w-sm'
-              onChange={handleSearch}
+      {!isLoadingImg && (
+        <div className='sm:flex sm:justify-between sm:items-center'>
+          <>
+            <div className='hidden sm:flex flex-1 items-center gap-2 my-4'>
+              <Input
+                type='text'
+                placeholder='Search'
+                className='w-full max-w-sm'
+                onChange={handleSearch}
+              />
+              <DropdownFilter mode={getMode()} setMode={handleFilterChange} />
+            </div>
+            <SaveBtn
+              className='w-full max-w-40 sm:ml-2 sm:block hidden'
+              initialPlayedChamps={initialPlayedChamps}
+              clubId={clubId}
+              userId={params.id}
+              playedChamps={playedChamps}
+              setInitialPlayedChamps={setInitialPlayedChamps}
             />
-            <DropdownFilter mode={getMode()} setMode={handleFilterChange} />
-          </div>
-          <SaveBtn
-            className='my-4 w-full max-w-40 sm:ml-2'
-            initialPlayedChamps={initialPlayedChamps}
-            clubId={clubId}
-            userId={params.id}
-            playedChamps={playedChamps}
-            setInitialPlayedChamps={setInitialPlayedChamps}
-          />
+
+            <div className='flex flex-col justify-center items-center sm:hidden mt-4 mb-2'>
+              <div className='flex gap-1.5'>
+                <Input
+                  type='text'
+                  placeholder='Search'
+                  className='w-full max-w-sm'
+                  onChange={handleSearch}
+                />
+                <DropdownFilter mode={getMode()} setMode={handleFilterChange} />
+              </div>
+              <SaveBtn
+                className='my-4 w-full max-w-40 sm:ml-2'
+                initialPlayedChamps={initialPlayedChamps}
+                clubId={clubId}
+                userId={params.id}
+                playedChamps={playedChamps}
+                setInitialPlayedChamps={setInitialPlayedChamps}
+              />
+            </div>
+          </>
         </div>
-      </div>
+      )}
 
       {isLoadingImg && <ImageGridSkeleton />}
 
