@@ -4,6 +4,7 @@ import { UserPicture } from "./_components/UserPicture";
 import { UserStats } from "./_components/UserStats";
 import { Suspense } from "react";
 import ClubSkeleton from "./_components/ClubSkeleton";
+import Loading from "./loading";
 type Props = {
   searchParams: {
     club: string;
@@ -54,11 +55,11 @@ export default async function ClubView({ searchParams: { club: clubId } }: Props
           </div>
 
           {/* Latest played champs */}
-          <Suspense fallback={<ClubSkeleton />}>
+          <Suspense fallback={<Loading />}>
             <div className='w-full'>
               <ul className='flex gap-1 flex-wrap justify-center sm:justify-normal'>
                 {member.champions.length > 0 &&
-                  member.champions.slice(0, 17).map((champ) => (
+                  member.champions.slice(0, 16).map((champ) => (
                     <li key={champ}>
                       <Champion
                         key={champ}

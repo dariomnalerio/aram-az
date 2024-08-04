@@ -120,7 +120,7 @@ export default function ClubDemo() {
   }
 
   return (
-    <div className='container flex flex-col gap-4 mb-20'>
+    <div className='container flex flex-col gap-4 mt-10 mb-20'>
       {sortedMembers.map((member) => (
         <div
           key={member.id}

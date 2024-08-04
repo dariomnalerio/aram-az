@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ClubSkeleton() {
   return (
-    <div className='container flex flex-col gap-4'>
+    <div className='container flex flex-col gap-4 mt-10'>
       {Array.from({ length: 5 }).map((_, i) => (
         <div
           key={i}
@@ -19,7 +19,7 @@ export default function ClubSkeleton() {
           {/* Latest played champs */}
           <div className='w-full'>
             <ul className='flex gap-1 flex-wrap justify-center sm:justify-normal'>
-              {Array.from({ length: 16 }).map((_, i) => (
+              {Array.from({ length: 15 }).map((_, i) => (
                 <li key={i}>
                   <Skeleton className='w-16 h-16' />
                 </li>
