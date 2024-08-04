@@ -2,6 +2,8 @@ import { getAllClubInfo, getChampImagesByIds, getChampsCount, getUser } from "@/
 import { Champion } from "@/components/Champion";
 import { UserPicture } from "./_components/UserPicture";
 import { UserStats } from "./_components/UserStats";
+import { Suspense } from "react";
+import ClubSkeleton from "./_components/ClubSkeleton";
 type Props = {
   searchParams: {
     club: string;
@@ -52,27 +54,29 @@ export default async function ClubView({ searchParams: { club: clubId } }: Props
           </div>
 
           {/* Latest played champs */}
-          <div className='w-full'>
-            <ul className='flex gap-1 flex-wrap justify-center sm:justify-normal'>
-              {member.champions.length > 0 &&
-                member.champions.slice(0, 12).map((champ) => (
-                  <li key={champ}>
-                    <Champion
-                      key={champ}
-                      url={champImgs?.find((img) => img.id === champ)?.img_url ?? ""}
-                      name={champ}
-                    />
-                  </li>
-                ))}
+          <Suspense fallback={<ClubSkeleton />}>
+            <div className='w-full'>
+              <ul className='flex gap-1 flex-wrap justify-center sm:justify-normal'>
+                {member.champions.length > 0 &&
+                  member.champions.slice(0, 17).map((champ) => (
+                    <li key={champ}>
+                      <Champion
+                        key={champ}
+                        url={champImgs?.find((img) => img.id === champ)?.img_url ?? ""}
+                        name={champ}
+                      />
+                    </li>
+                  ))}
 
-              {member.champions.length === 0 && (
-                <li className='text-lg text-pretty text-center w-full'>
-                  <span className='text-primary/80 font-medium'>{member.username}</span> has not
-                  played any champions yet.
-                </li>
-              )}
-            </ul>
-          </div>
+                {member.champions.length === 0 && (
+                  <li className='text-lg text-pretty text-center w-full'>
+                    <span className='text-primary/80 font-medium'>{member.username}</span> has not
+                    played any champions yet.
+                  </li>
+                )}
+              </ul>
+            </div>
+          </Suspense>
         </div>
       ))}
     </div>
