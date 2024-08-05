@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Aram-AZ
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Aram-AZ is a project inspired by discussions with friends about a specific League of Legends gamemode. The aim of this project is to help users track the champions (playable characters) they have been randomly assigned to play until all 168 champions have been played. The platform also features a club system where users can join clubs and compete with each other to see who can complete the challenge first.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Technologies
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ For this project I decided to use Next.js as a full-stack solution and supabase as the database. I believe this stack is suited for this project because of the ease of use and the speed of development as well as scalability for a rather small-scale project.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Home Page**: The landing page of Aram-AZ, where users can get an overview of the application.
+- **Demo**: A page where for potential users to see the application in action without having to sign up.
+- **Profile**: A page where users can update and see their current progress.
+- **Club Page**: A dedicated area for users to create clubs, view club members, and compete in the challenge.
+- **Club Join**: A page users go by visiting a previously generated invite url to join a club.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Project URL
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Check out the live version of the project at: [Aram-AZ](https://aram-az.vercel.app/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Future Plans
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Riot API**: I plan to hook up the application to the Riot API to get the latest information on champions, matches and their stats automatically.
