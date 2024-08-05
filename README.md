@@ -6,12 +6,12 @@ Aram-AZ is a project inspired by discussions with friends about a specific Leagu
 
 ## Technologies
 
- For this project I decided to use Next.js as a full-stack solution and supabase as the database. I believe this stack is suited for this project because of the ease of use and the speed of development as well as scalability for a rather small-scale project.
+ For this project I decided to use Next.js as a full-stack solution and supabase for the database and authentication. I believe this stack is suited for this project because of the ease of use and the speed of development as well as scalability for a rather small-scale project.
 
 ## Pages
 
 - **Home Page**: The landing page of Aram-AZ, where users can get an overview of the application.
-- **Demo**: A page where for potential users to see the application in action without having to sign up.
+- **Demo**: A page for potential users to see the application in action without having to sign up.
 - **Profile**: A page where users can update and see their current progress.
 - **Club Page**: A dedicated area for users to create clubs, view club members, and compete in the challenge.
 - **Club Join**: A page users go by visiting a previously generated invite url to join a club.
