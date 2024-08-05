@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Aram-AZ | Demo",
+  description:
+    "Aram-AZ is a platform for League of Legends players who want to take part in the AZ challenge.",
+};
 
 type Props = {
   children: React.ReactNode;
