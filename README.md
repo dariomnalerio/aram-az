@@ -11,7 +11,7 @@ Aram-AZ is a project inspired by discussions with friends about a specific Leagu
 ## Pages
 
 - **Home Page**: The landing page of Aram-AZ, where users can get an overview of the application.
-- **Demo**: A page where for potential users to see the application in action without having to sign up.
+- **Demo**: A page for potential users to see the application in action without having to sign up.
 - **Profile**: A page where users can update and see their current progress.
 - **Club Page**: A dedicated area for users to create clubs, view club members, and compete in the challenge.
 - **Club Join**: A page users go by visiting a previously generated invite url to join a club.
