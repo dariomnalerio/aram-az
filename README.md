@@ -6,7 +6,7 @@ Aram-AZ is a project inspired by discussions with friends about a specific Leagu
 
 ## Technologies
 
- For this project I decided to use Next.js as a full-stack solution and supabase as the database. I believe this stack is suited for this project because of the ease of use and the speed of development as well as scalability for a rather small-scale project.
+ For this project I decided to use Next.js as a full-stack solution and supabase for the database and authentication. I believe this stack is suited for this project because of the ease of use and the speed of development as well as scalability for a rather small-scale project.
 
 ## Pages
 
