@@ -1,8 +1,5 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { createClub } from "@/app/actions/clubs/create-club";
 import { CreateClubDialog } from "./CreateClubDialog";
-import { joinClub } from "@/app/actions";
 
 type Props = {
   userId: string;

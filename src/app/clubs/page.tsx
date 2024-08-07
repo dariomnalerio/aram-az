@@ -1,85 +1,78 @@
-import { getAllClubInfo, getChampImagesByIds, getChampsCount, getUser } from "@/app/actions";
-import { Champion } from "@/components/Champion";
-import { UserPicture } from "./_components/UserPicture";
-import { UserStats } from "./_components/UserStats";
+import { redirect } from "next/navigation";
+import { createClub, getAllClubInfo, getUser, getUserClubs, leaveClub } from "../actions";
+import { Option } from "@/types";
+import { SelectClubSection } from "./_components/SelectClubSection";
+import { InviteButton } from "./_components/InviteButton";
+import { CreateClubDialog } from "@/components/Clubs/CreateClubDialog";
+import { revalidatePath } from "next/cache";
+import type { Metadata } from "next";
+import { LeaveClubDialog } from "./_components/LeaveClubDialog";
+import { NoClub } from "./_views/NoClub";
+import { UserInfoList } from "./_components/ClubView";
 import { Suspense } from "react";
-import ClubSkeleton from "./_components/ClubSkeleton";
+import { HeaderSkeleton } from "./_components/HeaderSkeleton";
 import Loading from "./loading";
+import { HasClub } from "./_views/HasClub";
+
+export const metadata: Metadata = {
+  title: "Aram-AZ | Clubs",
+  description: "Clubs page. Here you can see each club's data.",
+};
 type Props = {
   searchParams: {
     club: string;
   };
 };
-export default async function ClubView({ searchParams: { club: clubId } }: Props) {
+
+export default async function layout({ searchParams }: Props) {
   const { user } = await getUser();
-  if (!user || !clubId) {
-    return null;
+  if (!user) {
+    redirect("/login");
   }
 
+  const { data: userClubs } = await getUserClubs(user.id, { name: true });
+  let options: Option[] = [];
+  if (userClubs) {
+    options = userClubs.map((club) => ({
+      value: club.club_id,
+      label: club.name!,
+    }));
+  }
+
+  const handleCreateClub = async (formData: FormData) => {
+    "use server";
+    await createClub(formData);
+    revalidatePath("/clubs");
+  };
+
+  const handleLeaveClub = async (formData: FormData) => {
+    "use server";
+    const { status } = await leaveClub(formData);
+
+    if (status === 204) {
+      revalidatePath("/clubs");
+    }
+  };
+
   const { data: clubInfo } = await getAllClubInfo({
-    clubId,
+    clubId: searchParams.club ?? userClubs?.[0].club_id!,
     userId: user.id,
   });
 
-  if (!clubInfo) {
-    return null;
-  }
-
-  const { data: champImgs } = await getChampImagesByIds(
-    clubInfo?.map((member) => member.champions).flat() ?? []
-  );
-
-  const champCount = await getChampsCount();
-
-  const sortedClubInfo = clubInfo
-    .map((member) => {
-      const completedChamps = member.champions.length;
-      const completionRate = (completedChamps / champCount!) * 100;
-      return {
-        ...member,
-        completionRate,
-      };
-    })
-    .sort((a, b) => b.completionRate - a.completionRate);
-
   return (
-    <div className='mt-10 flex flex-col gap-4'>
-      {sortedClubInfo?.map((member) => (
-        <div
-          key={member.userId}
-          className='flex flex-col sm:flex-row items-center gap-4 border bg-primary/10 p-4 rounded-lg shadow-lg w-full'
-        >
-          <div className='flex flex-col gap-1 items-start sm:items-center justify-around p-2 rounded-md'>
-            <UserPicture username={member.username} userId={member.userId} clubId={clubId} />
-            <UserStats member={member} champCount={champCount!} />
-          </div>
+    <>
+      <Suspense fallback={<Loading />}>
+        {userClubs && userClubs.length > 0 && (
+          <HasClub
+            options={options}
+            userId={user.id}
+            clubId={searchParams.club ?? userClubs?.[0].club_id!}
+            clubInfo={clubInfo!}
+          />
+        )}
 
-          {/* Latest played champs */}
-          <Suspense fallback={<Loading />}>
-            <div className='w-full'>
-              <ul className='flex gap-1 flex-wrap justify-center sm:justify-normal'>
-                {member.champions.length > 0 &&
-                  member.champions.slice(0, 16).map((champ) => (
-                    <li key={champ}>
-                      <Champion
-                        key={champ}
-                        url={champImgs?.find((img) => img.id === champ)?.img_url ?? ""}
-                        name={champ}
-                      />
-                    </li>
-                  ))}
-
-                {member.champions.length === 0 && (
-                  <li className='text-lg text-pretty text-center w-full'>
-                    <span className='text-primary/80 font-medium'>{member.username}</span> has not
-                    played any champions yet.
-                  </li>
-                )}
-              </ul>
-            </div>
-          </Suspense>
-        </div>
-      ))}
-    </div>
+        {userClubs && userClubs.length === 0 && <NoClub userId={user.id} />}
+      </Suspense>
+    </>
   );
 }

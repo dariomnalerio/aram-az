@@ -9,10 +9,10 @@ export default function ClubSkeleton() {
           className='flex flex-col sm:flex-row items-center gap-4 border bg-primary/10 p-4 rounded-lg shadow-lg w-full'
         >
           <div className='flex flex-col gap-1 items-start sm:items-center justify-around p-2 rounded-md min-h-[90px]'>
-            <Skeleton className='w-16 h-4 rounded-md bg-primary/50 self-center' />
-            <div className='flex flex-col gap-1'>
+            <Skeleton className=' w-[200px] h-7 rounded-md bg-primary/50 self-center' />
+            <div className='flex items-center flex-col gap-2'>
               <Skeleton className='w-32 h-4' />
-              <Skeleton className='w-32 h-4' />
+              <Skeleton className='w-[200px] h-2' />
             </div>
           </div>
 
