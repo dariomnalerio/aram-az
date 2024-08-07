@@ -6,10 +6,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const formatUsername = (username: string) => {
-  const splitName = username.split(" ");
-  const firstName = splitName[0];
-  if (firstName.length > 8) {
-    return `${firstName.slice(0, 8)}...`;
+  if (username.length > 9) {
+    return `${username.slice(0, 9)}...`;
   }
-  return firstName;
+  return username;
 };
