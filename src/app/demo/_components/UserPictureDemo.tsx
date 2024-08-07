@@ -5,10 +5,9 @@ type UserPictureProps = {
 };
 
 export function UserPictureDemo({ username }: UserPictureProps) {
-  const formattedUsername = formatUsername(username);
   return (
-    <h3 className='text-xl font-medium rounded-md h-7 p-3 w-[160px] overflow-hidden flex items-center justify-center bg-primary/50'>
-      {formattedUsername}
+    <h3 className='text-xl font-medium rounded-md h-7 p-3 w-[200px] overflow-hidden flex items-center justify-center bg-primary/50'>
+      {username}
     </h3>
   );
 }

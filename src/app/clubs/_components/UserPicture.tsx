@@ -8,14 +8,13 @@ type UserPictureProps = {
 };
 
 export function UserPicture({ username, userId, clubId }: UserPictureProps) {
-  const formattedUsername = formatUsername(username);
   return (
     <Link
       href={`/user/${userId}?club=${clubId}`}
       aria-label={`Go to ${username}'s profile`}
-      className='text-xl font-medium rounded-md h-7 p-3 w-[160px] overflow-hidden flex items-center justify-center bg-primary/50'
+      className='text-xl font-medium rounded-md h-7 p-3 w-[200px] overflow-hidden flex items-center justify-center bg-primary/50'
     >
-      <h3 className=''>{formattedUsername}</h3>
+      <h3 className=''>{username}</h3>
     </Link>
   );
 }

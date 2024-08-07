@@ -10,7 +10,7 @@ export async function createClub(formData: FormData) {
 
   const schema = z.object({
     clubName: z.string().min(1, { message: "Club name is required" }),
-    username: z.string().min(3).max(20),
+    username: z.string().min(3).max(13),
     userId: z.string().min(1),
   });
 

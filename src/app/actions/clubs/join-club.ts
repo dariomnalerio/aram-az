@@ -14,7 +14,5 @@ export async function joinClub({ clubId, userId, username }: JoinClubDto) {
     .from("club_members")
     .insert([{ club_id: clubId, user_id: userId, username }]);
 
-  console.log("Join club response", JSON.stringify(response, null, 1));
-
   return response;
 }

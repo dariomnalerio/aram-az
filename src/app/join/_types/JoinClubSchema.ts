@@ -6,5 +6,5 @@ export const JoinClubSchema = z.object({
   username: z
     .string()
     .min(3, { message: "Username must be at least 3 characters long" })
-    .max(20, { message: "Username is too long" }),
+    .max(13, { message: "Username is too long" }),
 });

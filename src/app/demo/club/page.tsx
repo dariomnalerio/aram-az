@@ -29,7 +29,7 @@ export default function ClubDemo() {
   const userFromLocalStorage = useMemo(
     () => ({
       champions: playedChamps?.map((champ) => champ.champion_id) ?? [],
-      username: "Demo User",
+      username: "User Demo",
       id: "0",
     }),
     [playedChamps]
