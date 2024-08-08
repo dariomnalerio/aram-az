@@ -13,6 +13,7 @@ import { Suspense } from "react";
 import { HeaderSkeleton } from "./_components/HeaderSkeleton";
 import Loading from "./loading";
 import { HasClub } from "./_views/HasClub";
+import UserDataShowcase from "./_views/UserDataShowcase";
 
 export const metadata: Metadata = {
   title: "Aram-AZ | Clubs",
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
 type Props = {
   searchParams: {
     club: string;
+    user: string;
   };
 };
 
@@ -39,30 +41,21 @@ export default async function layout({ searchParams }: Props) {
     }));
   }
 
-  const handleCreateClub = async (formData: FormData) => {
-    "use server";
-    await createClub(formData);
-    revalidatePath("/clubs");
-  };
-
-  const handleLeaveClub = async (formData: FormData) => {
-    "use server";
-    const { status } = await leaveClub(formData);
-
-    if (status === 204) {
-      revalidatePath("/clubs");
-    }
-  };
-
   const { data: clubInfo } = await getAllClubInfo({
     clubId: searchParams.club ?? userClubs?.[0].club_id!,
     userId: user.id,
   });
 
+  const userIsInClub = userClubs && userClubs.length > 0;
+
   return (
     <>
       <Suspense fallback={<Loading />}>
-        {userClubs && userClubs.length > 0 && (
+        {userIsInClub && searchParams.user && searchParams.club && (
+          <UserDataShowcase clubId={searchParams.club} userId={searchParams.user} />
+        )}
+
+        {userIsInClub && !searchParams.user && (
           <HasClub
             options={options}
             userId={user.id}
@@ -71,7 +64,7 @@ export default async function layout({ searchParams }: Props) {
           />
         )}
 
-        {userClubs && userClubs.length === 0 && <NoClub userId={user.id} />}
+        {!userIsInClub && <NoClub userId={user.id} />}
       </Suspense>
     </>
   );

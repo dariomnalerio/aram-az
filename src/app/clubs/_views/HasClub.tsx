@@ -7,6 +7,7 @@ import { SelectClubSection } from "../_components/SelectClubSection";
 import { createClub, leaveClub } from "@/app/actions";
 import { revalidatePath } from "next/cache";
 import { ClubMemberWithChampions, Options } from "@/types";
+import SectionLayout from "@/components/Layout/SectionLayout";
 
 type Props = {
   options: Options[];
@@ -32,8 +33,8 @@ export function HasClub({ options, userId, clubId, clubInfo }: Props) {
   };
 
   return (
-    <section className='flex flex-col items-center mx-4 mb-20'>
-      <div className='flex justify-center gap-10 pt-10 pb-16'>
+    <SectionLayout>
+      <div className='flex justify-center gap-10 pb-16'>
         <h1 className=' text-3xl sm:text-4xl text-center font-semibold'>Explore Your Clubs</h1>
       </div>
       <div className='container'>
@@ -49,6 +50,6 @@ export function HasClub({ options, userId, clubId, clubInfo }: Props) {
         </div>
         <UserInfoList clubId={clubId} clubInfo={clubInfo} />
       </div>
-    </section>
+    </SectionLayout>
   );
 }

@@ -1,7 +1,5 @@
-import { getAllClubInfo, getChampImagesByIds, getChampsCount, getUser } from "@/app/actions";
+import { getChampImagesByIds, getChampsCount, getUser } from "@/app/actions";
 import { Champion } from "@/components/Champion";
-import { Suspense } from "react";
-import Loading from "../loading";
 import { UserPicture } from "./UserPicture";
 import { UserStats } from "./UserStats";
 import { ClubMemberWithChampions } from "@/types";

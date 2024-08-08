@@ -34,6 +34,8 @@ export default async function Layout({ children, noclub, hasclub, params }: Prop
     }
   }
 
+  console.log(JSON.stringify(userClubs, null, 1));
+
   return (
     <>
       {children}

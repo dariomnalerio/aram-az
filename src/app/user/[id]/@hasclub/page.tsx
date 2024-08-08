@@ -3,6 +3,7 @@ import { ClubSection } from "../_components/hasClub/ClubSection";
 import { Option } from "@/types";
 import { Suspense } from "react";
 import Loading from "./loading";
+import SectionLayout from "@/components/Layout/SectionLayout";
 
 type Props = {
   params: {
@@ -23,7 +24,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <Suspense fallback={<Loading />}>
-      <section className='flex flex-1 items-center flex-col pt-16'>
+      <SectionLayout>
         <div className='flex flex-col'>
           <h1 className='mb-4 text-3xl sm:text-4xl text-center font-semibold'>
             Champion Challenge
@@ -32,7 +33,7 @@ export default async function Page({ params }: Props) {
 
         {/* Reactive section*/}
         <ClubSection options={options ?? []} />
-      </section>
+      </SectionLayout>
     </Suspense>
   );
 }
