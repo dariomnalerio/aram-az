@@ -7,7 +7,7 @@ type Props = {
 };
 export default function SectionLayout({ children, className }: Props) {
   return (
-    <section className={cn("flex flex-1 items-center flex-col pt-16", className)}>
+    <section className={cn("flex flex-1 items-center flex-col pt-16 mb-20", className)}>
       {children}
     </section>
   );
