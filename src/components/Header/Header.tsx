@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../ui/button";
 import logo from "@/assets/logo.svg";
 import Link from "next/link";
@@ -12,8 +11,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { ClubBtn } from "./ClubBtn";
+import { ProfileBtn } from "./ProfileBtn";
 
-export default async function Header() {
+type Props = {
+  searchParams?: {
+    club: string;
+  };
+};
+
+export default async function Header({ searchParams }: Props) {
   const { user } = await getUser();
 
   return (
@@ -35,11 +42,7 @@ export default async function Header() {
                 Demo
               </Link>
             )}
-            {user && (
-              <Link href='/clubs' className='hover:underline underline-offset-4'>
-                Clubs
-              </Link>
-            )}
+            {user && <ClubBtn />}
           </div>
 
           {!user && (
@@ -50,9 +53,7 @@ export default async function Header() {
 
           {user && (
             <>
-              <Button className='w-20 text-foreground transition hover:scale-105' asChild>
-                <Link href={`/user/${user.id}`}>Profile</Link>
-              </Button>
+              <ProfileBtn userId={user.id} />
               <form action={handleLogout}>
                 <Button
                   className='w-20 text-foreground transition hover:scale-105'
