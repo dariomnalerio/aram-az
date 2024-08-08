@@ -41,14 +41,14 @@ export default function Home() {
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-8'>
             <Feature
               title='Update Your Club Stats'
-              description='Update champions played in each club you are part of.'
+              description='Update champions played in each club you are part of'
               image={profileView}
               alt='Feature 1'
             />
 
             <Feature
-              title='Compete with Friends'
-              description='Challenge your friends to see who can claim the victory.'
+              title='Compete With Friends'
+              description='Challenge your friends to see who can claim the victory'
               image={clubView}
               alt='Feature 2'
             />
