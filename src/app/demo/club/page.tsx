@@ -135,7 +135,7 @@ export default function ClubDemo() {
           <div className='w-full'>
             <ul className='flex gap-1 flex-wrap justify-center sm:justify-normal'>
               {member.champions.length > 0 &&
-                member.champions.slice(0, 17).map((champ) => (
+                member.champions.slice(0, 15).map((champ) => (
                   <li key={champ}>
                     <Champion
                       key={champ}
