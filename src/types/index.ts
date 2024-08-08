@@ -50,3 +50,9 @@ export type Options = {
   value: string;
   label: string;
 };
+
+export interface DemoMember {
+  champions: string[];
+  username: string;
+  id: string;
+}

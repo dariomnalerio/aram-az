@@ -1,22 +1,18 @@
 "use client";
 import { getChampImagesByIds, getChampsCount } from "@/app/actions";
 import { useEffect, useMemo, useState } from "react";
-import { UserPictureDemo } from "../_components/UserPictureDemo";
 import { UserStats } from "@/app/clubs/_components/UserStats";
-import { ChampImg } from "@/types";
+import { ChampImg, DemoMember } from "@/types";
 import { Champion } from "@/components/Champion";
-import { Skeleton } from "@/components/ui/skeleton";
 import ClubSkeleton from "@/app/clubs/_components/ClubSkeleton";
+import { HasClub } from "../_components/HasClub";
+import { useSearchParams } from "next/navigation";
+import UserDataShowcaseDemo from "../_components/UserDataShowcaseDemo";
 
 interface Champion {
   champion_id: string;
 }
 
-interface Member {
-  champions: string[];
-  username: string;
-  id?: string;
-}
 export default function ClubDemo() {
   const [playedChamps] = useState<Champion[] | null>(() => {
     const storedChamps = localStorage.getItem("playedChamps");
@@ -25,6 +21,7 @@ export default function ClubDemo() {
   const [champCount, setChampCount] = useState<number | null>(null);
   const [imgs, setImgs] = useState<ChampImg[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const searchParams = useSearchParams();
 
   const userFromLocalStorage = useMemo(
     () => ({
@@ -35,7 +32,7 @@ export default function ClubDemo() {
     [playedChamps]
   );
 
-  const mockUsers: Member[] = useMemo(
+  const mockUsers: DemoMember[] = useMemo(
     () => [
       {
         champions: [
@@ -81,6 +78,12 @@ export default function ClubDemo() {
     [mockUsers, userFromLocalStorage]
   );
 
+  const selectedUserId = searchParams.get("user");
+
+  const selectedMember = useMemo(() => {
+    return members.find((member) => member.id === selectedUserId) || userFromLocalStorage;
+  }, [members, selectedUserId, userFromLocalStorage]);
+
   useEffect(() => {
     const fetchData = async () => {
       const allChampionIds = members.flatMap((member) => member.champions);
@@ -120,41 +123,12 @@ export default function ClubDemo() {
   }
 
   return (
-    <div className='container flex flex-col gap-4 mt-10 mb-20'>
-      {sortedMembers.map((member) => (
-        <div
-          key={member.id}
-          className='flex flex-col sm:flex-row items-center gap-4 border bg-primary/10 p-4 rounded-lg shadow-lg w-full'
-        >
-          <div className='flex flex-col gap-1 items-start sm:items-center justify-around p-2 rounded-md'>
-            <UserPictureDemo username={member.username} />
-            <UserStats member={member} champCount={champCount!} />
-          </div>
-
-          {/* Latest played champs */}
-          <div className='w-full'>
-            <ul className='flex gap-1 flex-wrap justify-center sm:justify-normal'>
-              {member.champions.length > 0 &&
-                member.champions.slice(0, 15).map((champ) => (
-                  <li key={champ}>
-                    <Champion
-                      key={champ}
-                      url={imgs?.find((img) => img.id === champ)?.img_url ?? ""}
-                      name={champ}
-                    />
-                  </li>
-                ))}
-
-              {member.champions.length === 0 && (
-                <li className='text-lg text-pretty text-center w-full'>
-                  <span className='text-primary/80 font-medium'>{member.username}</span> has not
-                  played any champions yet.
-                </li>
-              )}
-            </ul>
-          </div>
-        </div>
-      ))}
+    <div className='container flex flex-col gap-4 mt-10'>
+      {!selectedUserId &&
+        sortedMembers.map((member) => (
+          <HasClub key={member.id} member={member} champCount={champCount!} imgs={imgs!} />
+        ))}
+      {selectedUserId && <UserDataShowcaseDemo member={selectedMember} />}
     </div>
   );
 }
