@@ -18,7 +18,7 @@ export default async function UserDataShowcase({ userId, clubId }: Props) {
 
   return (
     <SectionLayout>
-      <div className='container mb-20'>
+      <div className='container'>
         <div className='flex justify-center items-center gap-6 mb-16'>
           <RemoveSearchParamBtn param='user' className='mt-1' />
           <h1 className='text-4xl text-center text-pretty'>{`Total champions played by ${userData?.username}`}</h1>
