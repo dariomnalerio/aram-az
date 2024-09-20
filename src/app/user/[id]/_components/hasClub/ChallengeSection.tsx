@@ -19,36 +19,12 @@ export function ChallengeSection() {
   const [imgs, setImgs] = useState<ChampImg[]>([]);
   const [filteredImgs, setFilteredImgs] = useState<ChampImg[]>([]);
   const [playedChamps, setPlayedChamps] = useState<PlayedChamps>([]);
-  // const initialPlayedChamps = useRef<PlayedChamps>([]);
   const [initialPlayedChamps, setInitialPlayedChamps] = useState<PlayedChamps>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [mode, setMode] = useState<Mode>("all");
   const clubId = searchParams.get("club");
   const hasPlayedAllChampions = playedChamps?.length === 167;
   const noChampionsPlayed = initialPlayedChamps?.length === 0;
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-      return params.toString();
-    },
-    [searchParams]
-  );
-
-  const getMode = useCallback(() => {
-    let mode: Mode = "all";
-
-    const modeParam = searchParams.get("mode") as Mode;
-
-    if (modeParam === "played" || modeParam === "unplayed") {
-      mode = modeParam;
-    }
-
-    return mode;
-  }, [searchParams]);
-
-  const getSearchQuery = useCallback(() => {
-    return searchParams.get("search") || "";
-  }, [searchParams]);
 
   useEffect(() => {
     const getData = async () => {
@@ -86,9 +62,6 @@ export function ChallengeSection() {
     if (!imgs) return;
 
     const filtered = imgs.filter((champion) => {
-      const searchQuery = getSearchQuery();
-      const mode = getMode();
-
       const nameMatches = champion.name
         .toLocaleLowerCase()
         .replace(".webp", "")
@@ -108,17 +81,7 @@ export function ChallengeSection() {
     });
 
     setFilteredImgs(filtered);
-  }, [
-    playedChamps,
-    imgs,
-    searchParams,
-    pathname,
-    router,
-    initialPlayedChamps,
-    createQueryString,
-    getMode,
-    getSearchQuery,
-  ]);
+  }, [playedChamps, imgs, searchParams, pathname, router, initialPlayedChamps, mode, searchQuery]);
 
   // on leave page
   useEffect(() => {
@@ -153,22 +116,11 @@ export function ChallengeSection() {
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const searchQuery = e.target.value.toLocaleLowerCase().replace(" ", "");
-
-    const searchParam = getSearchQuery();
-    // if search query is empty, remove search query from url
-    if (!searchQuery && searchParam) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete("search");
-      router.push(`${pathname}?${params.toString()}`);
-      return;
-    }
-
-    router.push(`${pathname}?${createQueryString("search", searchQuery)}`);
+    setSearchQuery(e.target.value.toLocaleLowerCase().replace(" ", ""));
   };
 
-  const handleFilterChange = (mode: Mode) => {
-    router.push(`${pathname}?${createQueryString("mode", mode)}`);
+  const handleFilterChange = (newMode: Mode) => {
+    setMode(newMode);
   };
 
   return (
@@ -183,7 +135,7 @@ export function ChallengeSection() {
                 className='w-full max-w-sm'
                 onChange={handleSearch}
               />
-              <DropdownFilter mode={getMode()} setMode={handleFilterChange} />
+              <DropdownFilter mode={mode} setMode={handleFilterChange} />
             </div>
             <SaveBtn
               className='w-full max-w-40 sm:ml-2 sm:block hidden'
@@ -202,7 +154,7 @@ export function ChallengeSection() {
                   className='w-full max-w-sm'
                   onChange={handleSearch}
                 />
-                <DropdownFilter mode={getMode()} setMode={handleFilterChange} />
+                <DropdownFilter mode={mode} setMode={handleFilterChange} />
               </div>
               <SaveBtn
                 className='my-4 w-full max-w-40 sm:ml-2'
@@ -222,12 +174,12 @@ export function ChallengeSection() {
       {/* 
           if query search returns no results
         */}
-      {filteredImgs?.length === 0 && !isLoadingImg && getSearchQuery() && !noChampionsPlayed && (
+      {filteredImgs?.length === 0 && !isLoadingImg && searchQuery && !noChampionsPlayed && (
         <h3 className='text-center text-foreground text-3xl py-3'>No champions found</h3>
       )}
 
       {/* if no champs have been played */}
-      {getMode() === "played" && noChampionsPlayed && (
+      {mode === "played" && noChampionsPlayed && (
         <div className='text-center text-foreground text-3xl py-3'>
           You have not played any champions
         </div>
@@ -236,7 +188,7 @@ export function ChallengeSection() {
       {/* 
             if user has played all champions and mode is 'unplayed'
         */}
-      {getMode() === "unplayed" && hasPlayedAllChampions && (
+      {mode === "unplayed" && hasPlayedAllChampions && (
         <div className='text-center text-foreground text-3xl py-3'>
           You have played all the champions
         </div>
